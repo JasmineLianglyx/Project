@@ -1,0 +1,205 @@
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f4f7f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    margin-top: 20px;
+}
+
+.section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.section h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#controls > div {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Slider styling */
+.slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 10px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    border-radius: 5px;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007BFF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007BFF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* Input Box Styling */
+.input-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-box:hover, .input-box:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* Dropdown styling */
+.dropdown {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropdown:hover, .dropdown:focus {
+    border-color: #007BFF;
+}
+
+/* Add a custom arrow to dropdown */
+.dropdown::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Checkbox styling */
+input[type="radio"] {
+    accent-color: #007BFF;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+input[type="radio"]:hover {
+    border-color: #007BFF;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-container button {
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+    background-color: #004494;
+}
+
+.shap-bar {
+    height: 400px;
+    width: 100%;
+}
+
+.explanation {
+
+    background-color: #eef6ff;
+    border-left: 6px solid #007bff;
+    padding: 5px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.explanation h3 {
+    color: #007BFF;
+    margin-bottom: 1px;
+}
+
+.explanation p {
+    color: #666;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+/* Table Styles */
+#data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#data-table th, #data-table td {
+    border: 1px solid #ddd;
+    padding: 8px; /* Adjust padding as needed */
+    text-align: center;
+}
+
+th {
+    background-color: #f0f0f0; /* Optional: Different background for header */
+}
+
+textarea {
+    font-size: 18px; /* Adjust this size as needed */
+    padding: 10px;   /* Adds padding inside the textarea for better readability */
+    width: 100%;     /* Ensures the textarea spans the width of its container */
+    box-sizing: border-box; /* Ensures padding does not exceed the width */
+}
+

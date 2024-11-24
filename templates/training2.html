@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Session</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="training-session">
+        <h1>Training Session</h1>
+
+        <!-- Step 1: Data Table and Feature Explanation -->
+        <div id="step1" class="section">
+            <h2>Step 1: Data Instance</h2>
+            <p style="color: #666; background-color: #eef6ff; border-left: 6px solid #007bff; padding: 5px 15px; margin: 10px 0; border-radius: 5px; line-height: 1.4;">This table represents the data features used to determine the loan approval. Each feature influences the AI model's decision.<br>
+            In this data instance, we see that the applicant is from an <strong><span style="color: #007bff;"> urban </strong></span> area, with an annual income of <strong><span style="color: #007bff;">$50,000</strong></span>. This applicant is applying for a loan of <span style="color: #007bff;"><strong>$200,000</strong></span>. The AI model will use this information, to predict whether the applicant is likely to be approved for the loan. 
+            </p>
+            <table id="data-table">
+                <!-- Example Data Instance Table -->
+                <tr>
+                    <th>Feature</th>
+                    <th>Income</th>
+                    <th>Property Area</th>
+                    <th>Loan Amount</th>
+                </tr>
+                <tr>
+                    <td>Value</tf>
+                    <td>$50,000</td>
+                    <td>Urban</td>
+                    <td>$200,000</td>
+                </tr>
+                <!-- Add more features as needed -->
+            </table>
+        </div>
+
+        <!-- Step 2: User Prediction -->
+        <div id="step2" class = "section" style="display: none;">
+            <h2>Step 2: Make Your Prediction</h2>
+            <p style="font-size: 18px;">Based on the data instance above, do you think the loan will be approved?</p>
+            <label>
+                <input type="radio" name="prediction" value="Yes" required> Will Be Approved
+            </label>
+            <label>
+                <input type="radio" name="prediction" value="No" required> Will Not Be Approved
+            </label>
+        </div>
+
+        <!-- Step 3: AI Prediction Result -->
+        <div id="step3" class = "section" style="display: none;">
+            <h2>Step 3: AI Prediction Result</h2>
+            <p style="color: #666; background-color: #eef6ff; border-left: 6px solid #007bff; padding: 5px 15px; margin: 10px 0; border-radius: 5px; line-height: 1.4;">
+            This is the prediction made by the AI model based on the data instance.</p>
+            <p style="font-size: 18px;">The AI predicts: <span id="ai-result" style="color: #4BC0C0;"><strong>Will Be Approved</strong></span></p>
+        </div>
+
+        <!-- Step 4: Model Accuracy -->
+        <div id="step4" class = "section" style="display: none;">
+            <h2>Step 4: AI Accuracy</h2>
+            <p style="color: #666; background-color: #eef6ff; border-left: 6px solid #007bff; padding: 5px 15px; margin: 10px 0; border-radius: 5px; line-height: 1.4;">
+            Model accuracy represents how often the AI model predicts correctly. A higher accuracy means better performance. <br>
+            91.3% means that 91.3% of the time, the AI correctly predicts whether a loan will be approved or not. <br>
+            In other words, if the model evaluated <strong><span style="color: #007bff;">100 loan applications</span></strong>, it would <strong><span style="color: #007bff;">correctly</span></strong> predict the outcome for about <strong><span style="color: #007bff;">93 of them</span></strong>.</p>
+            <p style="font-size: 18px;">The AI accuracy is: <span id="model-accuracy">High (91.3%)</span>.</p>
+        </div>
+
+        <!-- Final Step: Training Complete -->
+        <div id="step5" class = "section" style="display: none;">
+            <h2>Training Completed!</h2>
+            <p style="font-size: 18px;">You have completed the training session. You are now ready to start the experiment.</p>
+            <div class="button-container">
+                <button id="start-experiment" onclick="startExp()">Start Experiment</button>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div id="next" class="button-container" style="display: block;">
+            <button id="next-button" onclick="nextStep()">Next</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep() {
+            // Check if we are on step 2 and if a prediction is required
+            if (currentStep === 2) {
+                const predictionSelected = document.querySelector('input[name="prediction"]:checked');
+                if (!predictionSelected) {
+                    alert('Please make a prediction before proceeding.');
+                    return; // Stop moving to the next step if no prediction is selected
+                }
+            }
+
+            // Show the current step
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+
+            // If there are more steps, increase the step count and show the next step
+            if (currentStep == 2 ) {
+                currentStep += 1;
+                document.getElementById(`step2`).style.display = 'none';
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+            }else if (currentStep !=2 && currentStep < 4){
+                currentStep += 1;
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+            }else{
+                document.getElementById(`step1`).style.display = 'none';
+                document.getElementById(`step2`).style.display = 'none';
+                document.getElementById(`step3`).style.display = 'none';
+                document.getElementById(`step4`).style.display = 'none';
+                document.getElementById(`step5`).style.display = 'block';
+                document.getElementById(`next`).style.display = 'none';
+            }
+        }
+
+        function renderShapChart() {
+            // Example SHAP values and features
+            const shapValues = [0.35, -0.50, 0.20];  
+            const features = ['Gender', 'Income', 'Loan Amount']; 
+
+            const ctx = document.getElementById('shap-bar').getContext('2d');
+
+            // Determine colors based on SHAP value sign
+            const colors = shapValues.map(value => value >= 0 ? 'rgba(75, 192, 192, 0.7)' : 'rgba(255, 99, 132, 0.7)');
+
+            shapChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: features,
+                    datasets: [{
+                        label: 'SHAP Values',
+                        data: shapValues,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color.replace('0.7', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return value.toFixed(2);
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateValue(feature, value) {
+            // Update the displayed value below the slider
+            document.getElementById(`${feature}-value`).textContent = value;
+        }
+
+        function createControls() {
+            const features = {
+                'Income': { type: 'slider', min: 0, max: 200000, value: 50000, step: 1000 },
+                'Loan Amount': { type: 'slider', min: 0, max: 500000, value: 200000, step: 10000 },
+                'Property Area': { type: 'dropdown', options: [[0, 'Rural'], [1, 'Semiurban'], [2, 'Urban']], value: 2 }
+            };
+
+            const controlsDiv = document.getElementById('controls');
+            controlsDiv.innerHTML = ''; // Clear existing controls
+
+            for (const feature in features) {
+                const controlContainer = document.createElement('div');
+
+                if (features[feature].type === 'slider') {
+                    controlContainer.innerHTML = `
+                        <label for="${feature}">${feature}</label>
+                        <input type="range" id="${feature}" class="slider" min="${features[feature].min}" max="${features[feature].max}" value="${features[feature].value}" step="${features[feature].step}" oninput="updateValue('${feature}', this.value)">
+                        <span id="${feature}-value">${features[feature].value}</span>
+                    `;
+                } else if (features[feature].type === 'dropdown') {
+                    const options = features[feature].options.map(([optionValue, label]) =>
+                        `<option value="${optionValue}" ${optionValue == features[feature].value ? 'selected' : ''}>${label}</option>`
+                    ).join('');
+                    controlContainer.innerHTML = `
+                        <label for="${feature}">${feature}</label>
+                        <select id="${feature}" class="dropdown" onchange="updateDropdownValue('${feature}', this.value)">
+                            ${options}
+                        </select>
+                    `;
+                }
+
+                controlsDiv.appendChild(controlContainer);
+            }
+        }
+
+        // Function to update the prediction based on user inputs
+        function updatePrediction() {
+            const income = parseFloat(document.getElementById('Income').value);
+            const loanAmount = parseFloat(document.getElementById('Loan Amount').value);
+            
+            predictionText = "Will Be Approved";
+            color = "#4BC0C0"
+
+            // Apply the condition to check income and loan amount
+            if (income <= 10000 || loanAmount >= 300000) {
+                predictionText = "Will Not Be Approved";
+                color = "#FF6384"
+            }
+
+            // Update the prediction result on the page
+            a1 = document.getElementById('ai-result');
+            a2 = document.getElementById('ai-result2');
+
+            // Set the innerHTML to include <strong> and the color
+            a1.innerHTML = `<strong><span style="color: ${color};">${predictionText}</span></strong>`;
+            a2.innerHTML = `<strong><span style="color: ${color};">${predictionText}</span></strong>`;
+
+        }
+
+        function startExp(){
+            window.location.href = '/explanations';
+        }
+
+        // Ensure that the DOM is fully loaded before rendering the SHAP chart
+        document.addEventListener('DOMContentLoaded', function() {
+            renderShapChart();
+            createControls();
+        });
+    </script>
+</body>
+</html>

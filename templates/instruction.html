@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome & Instructions</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Inline CSS for this page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .instruction-box {
+            background-color: #eef6ff;
+            border-left: 6px solid #007bff;
+            padding: 10px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Welcome to the Loan Approval Experiment</h1>
+        <p>Thank you for participating in this experiment! We appreciate your time and involvement in helping us understand human-AI interaction in decision-making processes.</p>
+
+        <h2>Instructions</h2>
+        <div class="instruction-box">
+            <p>You will be provided with various information about potential loan applicants, such as their income, employment status, and other factors. Based on this information, your task is to assess the likelihood of loan approval.</p>
+            
+            <p>To assist you, the experiment includes a brief training session that will help you become familiar with the basics of the loan approval process and how AI models are typically used to make these decisions.</p>
+        </div>
+
+        <p>Once you feel comfortable with the instructions and are ready to proceed, click the button below to begin your experiment.</p>
+
+        <div class="button-container">
+            <form action="{{ url_for('training') }}">
+                <button type="submit">Start</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="survey-form">
+        <h1>Pre-Experiment Survey</h1>
+        <form action="/submit_survey" method="post">
+
+            <!-- All Questions in One Div with class 'section' -->
+            <div class="section">
+                
+                <!-- Age Section -->
+                <section>
+                    <h2>Age</h2>
+                    <label for="age">Enter your age:</label><br>
+                    <input type="text" id="age" name="age" class="input-box" min="16" max="60" required>
+                </section><br>
+
+                <!-- Gender Section as Dropdown -->
+                <section>
+                    <h2>Gender</h2>
+                    <label for="gender">Select your gender:</label><br>
+                    <select id="gender" name="gender" class="dropdown">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </section><br>
+
+                <!-- Education Section as Dropdown -->
+                <section>
+                    <h2>Education Level</h2>
+                    <label for="education">Choose your highest education level:</label><br>
+                    <select id="education" name="education" class="dropdown">
+                        <option value="highschool">High School</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                </section><br>
+
+                <!-- AI Familiarity Section as Dropdown -->
+                <section>
+                    <h2>Familiarity with AI</h2>
+                    <label for="ai_familiarity">Rate your familiarity with AI:</label><br>
+                    <select id="ai_familiarity" name="ai_familiarity" class="dropdown">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </section><br>
+
+            </div>
+            
+            <div class="button-container">
+                <button type="submit">Submit</button>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>

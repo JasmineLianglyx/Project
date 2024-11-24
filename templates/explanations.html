@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Loan Prediction Explanation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Loan Prediction</h1>
+    
+    <!-- Data Instance Display Section -->
+    <div class="section data-instance" id="data-instance">
+        <h2>Current Loan Application Data</h2>
+        <table id="data-table">
+            <tr>
+                <th>Married</th>
+                <th>Dependents</th>
+                <th>Education</th>
+                <th>Self Employed</th>
+                <th>Applicant Income</th>
+                <th>Coapplicant Income</th>
+                <th>Loan Amount</th>
+                <th>Loan Amount Term</th>
+                <th>Credit History</th>
+                <th>Property Area</th>
+            </tr>
+            <tr>
+                <td id="married-value"></td>
+                <td id="dependents-value"></td>
+                <td id="education-value"></td>
+                <td id="self-employed-value"></td>
+                <td id="applicant-income-value"></td>
+                <td id="coapplicant-income-value"></td>
+                <td id="loan-amount-value"></td>
+                <td id="loan-amount-term-value"></td>
+                <td id="credit-history-value"></td>
+                <td id="property-area-value"></td>
+            </tr>
+            <tr>
+                <td colspan="11" id="value-row">
+                    <!-- Values will be populated here -->
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    
+    <!-- Accuracy Section -->
+    <div id="accuracy" class="section" style="display:none;">
+        <h2>Model Accuracy</h2>
+        <div id="accuracy-result" style="font-size: 1.2rem; font-weight: bold; color: #333;"></div>
+    </div>
+
+    <!-- Prediction Section -->
+    <div id="prediction" class="section" style="display:none;">
+        <h2>Prediction</h2>
+        <div id="prediction-result" style="font-size: 1.2rem; font-weight: bold; color: #4BC0C0;"></div>
+    </div>
+    
+    <!-- Static Explanation (SHAP) Section -->
+    <div id="shap" class="section" style="display:none;">
+        <h2>Feature Importance Overview</h2>
+        <div class="explanation">
+            <p>In this section, you'll find a visual representation of how each feature contributes to the loan prediction. The chart displays SHAP values, indicating the impact of each feature on the model's decision. Positive values suggest a greater likelihood of loan approval, while negative values indicate a lesser likelihood.</p>
+        </div>
+        <canvas id="shap-bar" class="shap-bar"></canvas>
+    </div>
+
+    <!-- Interactive Explanation Section -->
+    <div id="interactive-panel" class="section" style="display:none;">
+        <h2>Adjustable Inputs</h2>
+        <div class="explanation">
+            <p>In this panel, you can modify the input features related to the loan application. Use the sliders and dropdown menus to adjust values such as income, gender, property area, and so on. After making changes, click the "Get New Prediction" button to see how your adjustments impact the loan prediction.</p>
+        </div>
+        <div id="controls"></div>
+
+        <div id="current-data-display">
+            <h3>Current Data Values</h3>
+            <pre id="current-data-values"></pre>
+        </div>
+
+        <div class="button-container">
+            <button id="predict-button" style="display:none;" onclick="updatePrediction()">Get New Prediction</button>
+        </div>
+    </div>
+
+    <!-- Counterfactual Explanation Section -->
+    <div id="counterfactual" class="section" style="display:none;">
+        <h2>What-If Analysis</h2>
+        <div class="explanation">
+            <p>This section allows you to explore how changes in input features could alter the prediction result. Here, you'll see the minimum changes required for features to shift the prediction from its current outcome.</p>
+        </div>
+        <div id="counterfactual-content" style="font-size: 1rem; color: #333;"></div>
+    </div>
+
+    <div id="prediction1" class="section" style="display:none;">
+        <p style="font-size: 18px;">Based on the data instance above, do you think the loan will be approved?</p>
+        <label>
+            <input type="radio" name="prediction" value="Y" required> Will Be Approved
+        </label>
+        <label>
+            <input type="radio" name="prediction" value="N" required> Will Not Be Approved
+        </label>
+    </div>
+
+    <div id="prediction2" class="section" style="display:none;">
+        <p style="font-size: 18px;">After reviewing the AI's prediction, accuracy, and explanations, do you still think the loan will be approved/not approved?</p>
+        <label>
+            <input type="radio" name="prediction" value="Y" required> Will Be Approved
+        </label>
+        <label>
+            <input type="radio" name="prediction" value="N" required> Will Not Be Approved
+        </label>
+    </div>
+
+    <div id="score" class="section" style="display:none;">
+        <label for="comprehension" style="font-size: 18px;">
+            On a scale of 1 to 10, how well do you understand the factors that influenced the AI's loan approval decision?
+        </label><br>
+        <!-- Set the initial value of the slider to the minimum -->
+        <input type="range" id="comprehension" name="comprehension" min="0" max="10" value="0" class="slider" oninput="updateSliderValue(this)">
+        <output id="comprehension-output" style="visibility: hidden;"></output> <!-- Empty output -->
+    </div>
+
+    <div class="button-container">
+        <button id="next-button" onclick="nextData()">Next</button>
+    </div>
+    <script>
+        function updateSliderValue(slider) {
+            const output = document.getElementById('comprehension-output');
+		    output.value = slider.value;
+		    output.style.visibility = 'visible';  // Show the output only after interaction
+
+        }
+
+        document.getElementById('comprehension').addEventListener('input', function() {
+            document.getElementById('comprehension-output').value = this.value;
+        });
+
+        // Set slider value to minimum without showing any output value initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const output = document.getElementById('comprehension-output');
+		    output.value = '';   // Clear the output value
+		    output.style.visibility = 'hidden';  // Initially hide the output value
+        });
+    </script>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+</body>
+</html>
